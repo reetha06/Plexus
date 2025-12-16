@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PLEXUS | Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script>
+  // 🔐 Session check
+  if (localStorage.getItem("facultyLoggedIn") !== "true") {
+    window.location.href = "login.html";
+  }
+</script>
+
+<div class="container">
+  <h1>Student Complaints</h1>
+
+  <div id="complaints"></div>
+
+  <br>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script src="script.js"></script>
+
+<script>
+fetch("http://localhost:3000/complaints")
+  .then(res => res.json())
+  .then(data => {
+    const box = document.getElementById("complaints");
+    data.forEach(c => {
+  const div = document.createElement("div");
+  div.style.marginBottom = "15px";
+
+  div.innerHTML = `
+    <p><strong>Complaint:</strong> ${c.message}</p>
+    <p style="font-size:13px; color:gray;">
+      Submitted on: ${c.created_at}
+    </p>
+    <hr>
+  `;
+
+  box.appendChild(div);
+});
+
+  });
+</script>
+
+</body>
+</html>
